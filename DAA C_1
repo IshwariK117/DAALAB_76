@@ -1,0 +1,33 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int coinChangeWays(int sum, vector<int>& coins) {
+    int n = coins.size();
+
+    // Create a table to store results of subproblems
+    vector<int> dp(sum + 1, 0);
+    dp[0] = 1; // There is one way to make sum = 0, i.e., by not selecting any coin
+
+    // Populate the dp table in a bottom-up manner
+    for (int i = 0; i < n; i++) {
+        for (int j = coins[i]; j <= sum; j++) {
+            dp[j] += dp[j - coins[i]];
+        }
+    }
+
+    return dp[sum];
+}
+
+int main() {
+    int sum1 = 4;
+    vector<int> coins1 = {1, 2, 3};
+    cout << "Output for sum = 4, coins = {1, 2, 3}: " << coinChangeWays(sum1, coins1) << endl;
+
+    int sum2 = 10;
+    vector<int> coins2 = {2, 5, 3, 6};
+    cout << "Output for sum = 10, coins = {2, 5, 3, 6}: " << coinChangeWays(sum2, coins2) << endl;
+
+    return 0;
+}
